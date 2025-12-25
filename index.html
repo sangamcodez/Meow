@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cats</title>
+    <link rel="icon" href="images.jpeg">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+*{ 
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root {
+    --bg-light: #f9f9f9;
+    --bg-card: #ffffff;
+    --text-dark: #4a3c4a;
+    --text-light: #7a6a5a;
+    --accent: #555;
+    --border: #f0e6d2;
+    --shadow: rgba(0,0,0,0.3);
+    --highlight: #ddd;
+}
+.dark-mode{
+    --bg-light: #1e2b1e;
+    --bg-card:#f9f9f9;
+    --text-dark: #3a373a;
+    --accent: #4a3c4a;
+    --border:#a88f75;
+    --shadow: rgba(0,0,0,0.08);
+    --highlight: #8a7a5b;
+}
+body{
+    font-family: 'Segoe UI', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: var(--bg-light);
+    color: var(--text-dark);
+    line-height: 1.6;
+    padding-bottom: 60px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+nav{
+    background: var(--bg-card);
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 10px var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 2px solid var(--accent);
+}
+.nav-container{
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content:space-between;
+    align-items:center;
+    gap: 20px;
+}
+.logo{
+    font-size: 1.8rem;
+     font-weight: bold;
+     color: var(--text-dark);
+     display: flex;
+     align-items: center;
+     text-decoration: none;
+     white-space: nowrap;
+}
+.logo i{
+    color: var(--accent);
+    margin-right: 10px;
+}
+.nav-links{
+    display: flex;
+     list-style: none;
+     gap: 20px;
+     margin:0;
+     padding: 0;
+     white-space: nowrap;
+}
+.nav-links a{
+    text-decoration:none;
+    color: var(--text-dark);
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+.nav-links a:hover, .nav-links a.active{
+    background: var(--accent);
+    color:red;
+}
+.nav-action{
+    display: flex;
+    gap:12px;
+    align-items: center;
+    white-space: nowrap;
+}
+.theme-toggle, .quiz-toggle{
+   background: var(--accent);
+   border:none;
+   color: white;
+   padding: 8px 15px;
+   border-radius: 20px;
+   cursor: pointer;
+   font-weight: bold;
+   display: flex;
+   align-items: center;
+   gap:8px;
+   transition: all 0.2s ease;
+   white-space: nowrap;
+   min-width:90px;
+   justify-content: center;
+}
+.theme-toggle:hover, .quiz-toggle:hover{
+    background: var(--highlight);
+    transform: translateY(-2px);
+}
+header{
+    background: var(--accent);
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 3px 10px var(--shadow);
+    margin-bottom: 25px;
+    border-bottom: 3px solid var(--highlight);
+}
+header h1{
+    font-size: 2.8rem;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+    letter-spacing: -0.5px;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.7);
+}
+header p{
+    font-style: italic;
+    max-width: 700px;
+    margin: 0 auto;
+    color: var(--text-light);
+}
+.controls{
+    max-width: 1200px;
+    margin: 0 auto 25px;
+    padding: 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+.search-box{
+    flex: 1;
+    min-width: 250px;
+    position: relative;
+}
+.search-box input{
+    width: 100%;
+    padding: 12px 20px 12px 40px;
+    border: 2px solid var(--border);
+    border-radius: 30px;
+    background: var(--bg-card);
+    color: var(--text-dark);
+    font-size: 1rem;
+    transition: border 0.3s ease;
+}
+.search-box input:focus{
+    outline: none;
+    border-color: var(--accent);
+}
+.search-box i{
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color:var(--text-light);
+}
+.filter-box{
+    display: flex;
+    gap: 10px;
+}
+.filter-box select{
+    padding: 12px 15px;
+    border: 2px solid var(--border);
+    border-radius: 30px;
+    background: var(--bg-card);
+    color: var(--text-dark);
+    font-size: 1rem;
+    min-width: 180px;
+}
+.fact-button{
+    background: var(--accent);
+    border: none;
+    color:white;
+    padding: 12px 25px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+.fact-button:hover{
+    background: var(--highlight);
+    transform: translateY(-2px);
+}
+.cat-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 10px;
+    padding: 0 20px;
+}
+.cat-card{
+    background: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid var(--border);
+    position: relative;
+}
+.cat-card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px var(--shadow);
+    border-color: var(--accent);
+}
+.cat-img{
+    height: 180px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+.favorite-btn{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255,0.8);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 2;
+}
+.favorite-btn:hover{
+    background: var(--accent);
+    color: white;
+}
+.favorite-btn.favorited{
+    background: var(--accent);
+    color: white;
+}
+.country-flag{
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    width: 40px;
+    height: 25px;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 3px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.cat-content{
+    padding: 20px;
+}
+.cat-content h3{
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+    color: var(--text-dark);
+}
+.cat-details{
+    margin: 15px 0;
+    padding: 12px;
+    background: var(--bg-light);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent);
+}
+.detail-row{
+    display: flex;
+    margin-bottom: 8px;
+}
+.detail-label{
+    font-weight: bold;
+    min-width: 80px;
+    color: var(--text-dark);
+}
+.action-buttons{
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+.sound-btn{
+    flex: 1;
+    padding: 8px;
+    background: var(--accent);
+    border:none;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+.sound-btn:hover{
+    background: var(--accent);
+}
+.sound-btn.playing{
+    background: #4CAF50;
+    animation: pulse 1.5s infinite;
+}
+.stats{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border);
+}
+.stat-item{
+    text-align: center;
+}
+.stat-value{
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--text-dark);
+}
+.stat-label{
+    font-size: 0.85rem;
+    color: var(--text-light);
+}
+.quiz-section{
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+    display: none;
+    background: var(--bg-card);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px var(--shadow);
+    border: 2px solid var(--border);
+}
+.quiz-header{
+    background: var(--accent);
+    padding: 20px;
+    text-align: center;
+    color: white;
+}
+.quiz-content{
+    padding: 25px;
+}
+.quiz-question{
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+.quiz-options{
+    display: grid;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.quiz-option{
+    padding: 12px 15px;
+    background: var(--bg-light);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.quiz-option:hover{
+    border-color: var(--accent);
+    background: var(--accent);
+    color: white;
+}
+.quiz-option.selected{
+    border-color: var(--accent);
+    background: var(--accent);
+    color: white;
+}
+.quiz-buttons{
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+.quiz-btn{
+    padding: 10px 25px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.submit-btn{
+    background: var(--highlight);
+    color: white;
+}
+.next-btn{
+    background: var(--highlight);
+    color: white;
+}
+footer{
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    color: var(--text-light);
+    font-style: italic;
+    border-top: 1px solid var(--border);
+}
+.paw-divider{
+    margin: 15px 0;
+    font-size: 1.2rem;
+    color: var(--accent);
+}
+@media (max-width:900px){
+    .nav-container{
+        flex-wrap: wrap;
+        justify-content: center;;
+    }
+    .nav-links {
+        order: 3;
+        width:100%;
+        justify-content: center;
+        margin-top: 10px;
+    }
+    .nav-action{
+        order: 2;
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 5px;
+    }
+    .logo{
+        order:1;
+    }
+}
+@media (max-width: 768px) {
+    .controls{
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .filter-box{
+        flex-wrap: wrap;
+    }
+    .cat-grid{
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+    .theme-toggle, .quiz-toggle{
+        padding: 6px 12px;
+        font-size: 0.9rem;
+        min-width: auto;
+    }
+}
+@media (max-width: 480px){
+    header{
+        padding: 1.5rem;
+    }
+    header h1{
+        font-size: 2rem;
+    }
+    .cat-grid{
+        grid-template-columns: 1fr;
+    }
+    .controls{
+        padding: 0 10px;
+    }
+}
+.cat-card:nth-child(3n+2) {
+    transform: rotate(0.5deg);
+}
+.cat-card:nth-child(3n+1){
+    transform: rotate(-0.3deg);
+}
+@keyframes popIn{
+    0%{transform: scale(0.8); opacity: 0;}
+    100%{transform: scale(1); opacity: 1;}
+}
+.animate-pop{
+    animation: popIn 0.4s ease-out forwards;
+}
+@keyframes pulse{
+    0%{transform: scale(1);}
+    50%{transform: scale(1.05);}
+    100%{transform: scale(1);}
+}
+.section{
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+    display: none;
+}
+.section.active{
+    display: block;
+}
+.section h2{
+    text-align: center;
+    margin-bottom: 25px;
+    color: var(--text-dark);
+    font-size: 2.2rem;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--accent);
+}
+.about-content, .care-content, .gallery-content{
+    background: var(--bg-card);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px var(--shadow);
+    border: 2px solid var(--border);
+}
+.care-tips{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+.care-tip{
+    padding: 15px;
+    background: var(--bg-light);
+    border-radius: 8px;
+    border-left: 3px solid var(--accent);
+}
+.gallery-images{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+.gallery-img{
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 8px;
+    box-shadow: 0 3px 8px var(--shadow);
+    border: 2px solid var(--border);
+}
+    </style>
+</head>
+<body>
+    <nav>
+    <div class="nav-container">
+        <a href="#" class="logo" id="homelink">
+        <i class="fas fa-paw"></i>
+        Cats
+        </a>
+<ul class="nav-links">
+    <li> <a href="#" class="nav-item active"  data-section="home">Home</a></li>
+    <li> <a href="#" class="nav-item" data-section="about">About</a>   </li>
+    <li> <a href="#" class="nav-item" data-section="care">Care Tips</a>  </li>
+    <li> <a href="#" class="nav-item" data-section="gallery">Gallery</a> </li>
+</ul>
+<div class="nav-action">
+    <button class="quiz-toggle" id="quizToggle">
+        <i class="fas fa-question-circle"></i>Quiz
+    </button>
+    <button class="theme-toggle" id="themeToggle">
+        <i class="fas fa-moon"></i>Dark Mode
+    </button>
+</div>
+    </div>
+    </nav>
+    <div id="home" class="section active">
+        <header>
+            <h1>Cats of the World</h1>
+            <p>Your guide to beautiful feline friends from around the world- because every cat deserves to be celebrated!</p>
+        </header>
+        <div class="controls">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="breedSearch" placeholder="Search cat breeds...">
+        </div>
+        <div class="filter-box">
+            <select id="countryFilter">
+                <option value="">All Countries</option>
+                <option value="USA">United States</option>
+                <option value="Thailand">Thailand</option>
+                <option value="Nepal">Nepal</option>
+                <option value="Scotland">Scotland</option>
+                <option value="Japan">Japan</option>
+                <option value="Russia">Russia</option>
+            </select>
+            <button class="fact-button" id="factButton">
+                <i class="fas fa-paw"></i>Did you know?
+            </button>
+        </div>
+    </div>
+    <div class="quiz-section" id="quizSection">
+        <div class="quiz-header">
+         <h2>Test your Knowledge about cats!</h2>
+        </div>
+        <div class="quiz-content">
+            <div class="quiz-question" id="quizQuestion">Loading Questions....</div>
+            <div class="quiz-options" id="quizOptions"></div>
+            <div class="quiz-buttons">
+                <button class="quiz-btn submit-btn" id="submitBtn">Submit Answer</button>
+                <button class="quiz-btn next-btn" id="nextBtn" style="display: none;">Next  Question</button>
+            </div>
+            <div id="quizResult" style="margin-top: 15px; text-align: center; font-weight: bold;">  </div>
+        </div>
+    </div>
+    <div class="cat-grid" id="catGrid"></div>
+    </div>
+    <div id="about" class="section">
+        <h2>About Our Feline Friends</h2>
+        <div class="about-content">
+            <p>Cats have been companions to humans for thousands of years, with evidence of domestication dating back to ancient Egypt. Today, there are over <strong>70 recognized cat breeds </strong>worldwide, each with unique characteristics, temperaments, and origins.</p>
+            <p>At Cats of the world, we celebrate the diversity of our feline friends. From the gentle gaints like the Maine Coon to the chatty Siamese, each cat has its own special personality and story. </p>
+            <p>Our mission is to provide cat lovers with accurate information about different breeds, their care requirements, and fascinating facts about these wonderful creatures. Whether you're a seasoned cat owner or considering adopting your first feline friend, we hope you find our resources helpful!</p>
+             <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border);">
+                <h3 style="margin-bottom: 10px;">Why Cats Make Great Companions</h3>
+                <ul style="padding-left: 20px;">
+                    <li>Low maintenance compared to other pets</li>
+                    <li>Provide emotional support and reduce strees</li>
+                    <li>Help Control pets like mice and insects</li>
+                    <li> Entertaining and independent personalities</li>
+                    <li>Purrs have healing frequencies(25-150Hz)</li>
+                </ul>
+             </div>
+        </div>
+        </div>
+    <div id="care" class="section">
+        <h2>Cats Care Tips</h2>
+        <div class="care-content">
+            <p>Proper care is essential for your cat's health and happiness. Here are some fundamental tips for cats owner:</p>
+            <div class="care-tip">
+                <h3>Nutrition</h3>
+                <p>Feed your cat high-quality food appropriate for their age, weight, and health status. Always provide fresh water.</p>
+            </div>
+            <div class="care-tip">
+                <h3>Veterinary Care</h3>
+                <p>Schedule annual check-ups, keep vaccinations current, and use parasite prevention treatments.</p>
+            </div>
+            <div class="care-tip">
+                <h3>Environment</h3>
+                <p>Provide scratching posts, climbing structures, and safe hiding spots. keep Toxic plants out of reach .</p>
+            </div>
+            <div class="care-tip">
+                <h3>Play & Exercise</h3>
+                <p>Engage your cat in daily play sessions to stimulate their mind and body. Rotate toys to maintain interest.</p>
+            </div>
+            <div class="care-tip">
+                <h3>Litter box</h3>
+                <p>Keep litter boxes clean and in quiet location. Have one more box than the number of cats in your home.</p>
+            </div>
+        </div>
+    </div>
+    <div id="gallery" class="section">
+        <h2> Cat Gallery</h2>
+        <div class="gallery-content">
+            <p>Enjoy These beautiful photographs of cats from around the world. Each image captures the unique personality and charm of our feline friends.</p>
+            <div class="gallery-images">
+                <div class="gallery-img" style="background-image: url('gallery1.jpg');"></div>
+                <div class="gallery-img" style="background-image: url('gallery2.jpg');"></div>
+                <div class="gallery-img" style="background-image: url('gallery3.jpg');"></div>
+                <div class="gallery-img" style="background-image: url('gallery4.jpg');"></div>
+                <div class="gallery-img" style="background-image: url('gallery5.jpg');"></div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <div class="paw-divider">🐾🐾🐾</div>
+        <p>Made by Sangam Kunwar for all cat lovers</p>
+        <p>Because every cat deserves a warm lap and a full food bowl!</p>
+    </footer>
+    <script>
+        const catData = [
+       { id: 1, name: "Maine Coon", country:"USA", countryFlag: "us", img: "download.jpeg", food: "High-protein diet,lovesfish", power: "Strong excellent hunters", trait: "Gentle gaints, very social", weight:"18kg", lifespan: "15 yrs", sound: "meow.mp3"},
+       { id: 2, name: "Siamese", country: "Thailand", countryFlag: "th", img: "images (1).jpeg", food: "Quality protein, loves chicken", power: "Vocal, highly intelligent", trait: "Talkative, affectionate", weight: "5.5kg", lifespan: "20 yrs", sound: "meow.mp3"},
+       { id: 3, name: "Bengal", country: "Nepal", countryFlag: "np", img: "download (1).jpeg", food: "High protein, often raw diet", power: "Energetic, loves climbing", trait: "Wild apperance, playful", weight: "7kg", lifespan: "16 yrs", sound: "meow.mp3"},
+       { id: 4, name: "Scottish Fold", country: "Scotland", countryFlag: "gb", img: "images (2).jpeg", food: "Balanced diet ,sensitive digestion", power: "Calm, adaptable", trait: "Floded ears, sweet temperament", weight: "6kg", lifespan: "14 yrs", sound: "meow.mp3"},
+       { id: 5, name: "Japanese Bobtail", country: "Japan", countryFlag: "jp", img: "download (2).jpeg", food: "Fished-based diet, loves seafood", power: "Agile, excellent jumpers", trait: "Short bobtail, playful", weight: "4.5kg", lifespan: "15yrs", sound: "meow.mp3"},
+       { id: 6, name: "Russian Blue", country:"Russia", countryFlag: "ru", img: "download (3).jpeg", food: "High Quality protein, sensitive stomach", power: "Reserved intellegent", trait: "Silvery-blue coat, shy with strangers", weight: "5.5kg", lifespan: "20 yrs", sound: "meow.mp3"},
+        ];
+        const catFact = [
+        "Cats spend 70% of their lives sleeping.",
+        "A group of cats is called a 'clowder'.",
+        "Cats have five toes on their front paws but only four on their back paws.",
+        "A cart's purr vibarates at a frequency of 25 to 150 Hz, which can promote healing.",
+        " Cats can rotate their ears 180 degrees.",
+        "A cat's nose print is unique, like a human's fingerprint.",
+        "Cats can jump up to six times their length.",
+        "Cats have 32 muscles in each ear for precise control."
+        ];
+        const quizQuestions = [
+            {question: "How many hours do cats sleep on average per day?",options:["8-10 hours", "12-14 hours","15-18 hours", "20-22 hours"], correct: 2},
+            {question: "What is the group of cats called?", options:["Pack", "Clowder", "Herding", "Colony"], correct:1},
+            {question: "Which cat breed is known for its folded ears?", options:["Persian", "Siamese", "Scottish Fold", "Maine Coon"], correct: 2},
+            {question: "How many toes does a typical cat have on its back paws?", options:["3", "4", "5", "6"],correct: 1},
+            {question: "What is the average lifespan of domestic cat?", options:["8-10 years", "12-15 years", "15-20 years", "20-25 years"],correct:2}
+        ];
+        const catGrid = document.getElementById('catGrid');
+        const breedSearch = document.getElementById('breedSearch');
+        const countryFilter = document.getElementById('countryFilter');
+        const factButton = document.getElementById('factButton');
+        const themeToggle = document.getElementById('themeToggle');
+        const quizToggle = document.getElementById('quizToggle');
+        const quizSection = document.getElementById('quizSection');
+        const quizQuestion = document.getElementById('quizQuestion');
+        const quizOptions = document.getElementById('quizOptions');
+        const submitBtn = document.getElementById('submitBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const quizResult = document.getElementById('quizResult');
+        const homelink = document.getElementById('homelink');
+        const navItems = document.querySelectorAll('.nav-item');
+let favorites = JSON.parse(localStorage.getItem('catFavorites')) || [];
+let currentQuizQuestion = 0;
+let selectedOption = null;
+let score = 0;
+let currentAudio = null;
+   function init() {
+    renderCats();
+        setupEventListener();
+        loadQuiz();
+        if (localStorage.getItem('darkMode') ==='true') {
+            document.body.classList.add('dark-mode');
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i> Light Mode';
+        }
+   }
+   function renderCats(filteredCats = catData) {
+    catGrid.innerHTML ='';
+    filteredCats.forEach(cat => {
+        const isFavorite =favorites.includes(cat.id);
+        const card = document.createElement('div');
+        card.className = 'cat-card animate-pop';
+        card.innerHTML = `
+        <div class="cat-img" style="background-image: url('${cat.img}');">
+            <div class="favorite-btn ${isFavorite ? 'favorited' : ''  }" data-id="${cat.id}">
+                <i class="fas fa-heart"></i>
+                </div>
+                <img src="https://flagcdn.com/w40/${cat.countryFlag}.png" alt="${cat.country}" class="country-flag">
+                </div>
+        <div class="cat-content">
+            <h3>${cat.name}</h3>
+            <div class="cat-details">
+                <div class="detail-row">
+                    <span class="detail-label">Food:</span>
+                    <span>${cat.food}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Trait:</span>
+                        <span>${cat.trait}</span>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="sound-btn" data-sound="${cat.sound}">
+                                <i class="fas fa-volume-up"></i>Play sound
+                                </button>
+                                <div class="stats-item">
+                                    <div class="stat-item">
+                                    <div class="stat-value">${cat.weight}</div>
+                                    <div class="stat-label">Max Weight</div>
+                                    </div>
+                                    <div class="stat-item">
+                                        <div class="stat-value">${cat.lifespan}</div>
+                                        <div class="stat-label">Lifespan</div>
+                                        </div>
+                                        </div>
+                                        </div>
+                                        `;
+                                        catGrid.appendChild(card);
+    }
+    );
+    document.querySelectorAll('.favorite-btn').forEach(btn => {
+        btn.addEventListener('click',toggleFavorite);
+    });
+    document.querySelectorAll('.sound-btn').forEach(btn => {
+        btn.addEventListener('click', playCatSound);
+    });
+   }
+   function toggleFavorite(e) {
+    const id = parseInt(e.currentTarget.dataset.id);
+    const btn = e.currentTarget;
+    if (favorites.includes(id)){
+        favorites = favorites.filter(favId => favId !== id);
+        btn.classList.remove('favorited');
+        btn.innerHTML = '<i class="far fa-heart"></i>';
+    }else {
+        favorites.push(id);
+        btn.classList.add('favorited');
+        btn.innerHTML = '<i class="fas fa-heart"></i>';}
+        localStorage.setItem('catFavorites', JSON.stringify(favorites));
+    }    function playCatSound(e) {
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+        }
+        document.querySelectorAll('.sound-btn').forEach(btn =>{
+            btn.classList.remove('playing');
+        });
+        const button = e.currentTarget;
+        const soundUrl=button.dataset.sound;
+        currentAudio = new Audio(soundUrl);
+        currentAudio.play()
+        .then(() => {
+button.classList.add('playing');
+        })
+        .catch(err=> {
+            console.error("Audio playback failed:",err)
+            alert("Could not play meow! Ensure 'meow.mp3' is in the same folder as this HTML file.");
+        });
+        currentAudio.onended =() => {
+            button.classList.remove('playing');
+            currentAudio = null;
+        };
+    }
+    function setupEventListener() {
+        breedSearch.addEventListener('input',filterCats);
+        countryFilter.addEventListener('change', filterCats);
+        factButton.addEventListener('click',showRandomFact);
+        themeToggle.addEventListener('click',toggleTheme);
+        quizToggle.addEventListener('click',toggleQuiz);
+        submitBtn.addEventListener('click',submitAnswer);
+        nextBtn.addEventListener('click',nextQuestion);
+        homelink.addEventListener('click',(e) =>{
+            e.preventDefault();
+            showSection('home');
+        });
+        navItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = e.currentTarget.dataset.section;
+                showSection(section);
+            });
+        });
+    }
+    function showSection(sectionId){
+        document.querySelectorAll('.section').forEach(section => {
+            section.classList.remove('active');
+        });
+        document.getElementById(sectionId).classList.add('active');
+        navItems.forEach(item =>{
+            item.classList.remove('active');
+            if (item.dataset.section === sectionId){
+                item.classList.add('active');
+            }
+                });
+                quizSection.style.display ='none';
+                window.scrollTo(0, 0);
+    }
+    function filterCats(){
+        const searchTerm = breedSearch.value.toLowerCase();
+        const country = countryFilter.value;
+        const filtered = catData.filter(cat => {
+            const matchesSearch = cat.name.toLowerCase().includes(searchTerm);
+            const matchesCountry = country === '' || cat.country === country;
+            return matchesSearch && matchesCountry;
+        });
+        renderCats(filtered);
+    }
+    function showRandomFact() {
+        const randomFact = catFact[Math.floor(Math.random()*catFact.length)];
+        alert(`Did You Know?\n\n${randomFact}`);
+    }
+    function toggleTheme() {
+        document.body.classList.toggle('dark-mode');
+        const isDarkmode = document.body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode',isDarkmode);
+        if(isDarkmode){
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>Light Mode';
+        } else {
+            themeToggle.innerHTML = '<i class="fas fa-moon"></i>DarkMode ';
+        }
+    }
+    function toggleQuiz(){
+        quizSection.style.display = quizSection.style.display === 'block' ? 'none' : 'block';
+        if (quizSection.style.display === 'block'){
+            loadQuiz();
+        }
+    }
+    function loadQuiz() {
+        currentQuizQuestion = 0;
+        score = 0;
+        selectedOption = null;
+        quizResult.textContent = '';
+        nextBtn.style.display = 'none';
+        submitBtn.style.display = 'block';
+        nextBtn.textContent = 'Next Question';
+        showQuestion();
+    }   
+    function showQuestion() {
+        const question = quizQuestions[currentQuizQuestion];
+        quizQuestion.textContent = question.question;
+        quizOptions.innerHTML ='';
+        question.options.forEach((option, index)=>{
+            const optionE1 = document.createElement('div');
+            optionE1.className = 'quiz-option';
+            optionE1.textContent = option;
+            optionE1.dataset.index = index;
+            optionE1.addEventListener('click',selectOption);
+            quizOptions.appendChild(optionE1);
+        });
+    }
+    function selectOption(e) {
+        document.querySelectorAll('.quiz-option').forEach(opt => {
+            opt.classList.remove('selected');
+        });
+        e.currentTarget.classList.add('selected');
+        selectedOption = parseInt(e.currentTarget.dataset.index);
+    }
+     function submitAnswer() {
+        if (selectedOption === null) {
+            quizResult.textContent = 'PLeaseselect an answer!';
+            quizResult.style.color = 'var(--text-dark)';
+            return;
+        } 
+        const question = quizQuestions[currentQuizQuestion];
+        if(selectedOption === question.correct){
+            quizResult.textContent = 'correct!';
+            quizResult.style.color = '#4caf50';
+            score++;
+        } else {
+            quizResult.textContent = `Incorrect! The Correct answer is: ${question.options[question.correct]}`;
+            quizResult.style.color= '#f44336';
+        }
+        submitBtn.style.display = 'none';
+        nextBtn.style.display = 'block';
+     }
+     function nextQuestion() {
+        currentQuizQuestion++;
+        if(currentQuizQuestion < quizQuestions.length) {
+            selectedOption = null;
+            quizResult.textContent = '';
+            nextBtn.style.display = 'none';
+            nextBtn.style.display = 'block';
+            showQuestion();
+        } else {
+            quizQuestion.textContent = 'Quiz Complete!';
+            quizOptions.innerHTML = `<div style="text-align: center; padding: 20px; font-size: 1.2rem;">
+                You scored ${score} out of ${quizQuestions.length}!<br><br>
+                ${score === quizQuestions.length ? 'Purrfect!' : score >= quizQuestions.length / 2 ? 'Good job!' : 'Keeps learning about cats!'}
+                </div>`;
+                submitBtn.style.display = 'none';
+                nextBtn.textContent = 'Restart Quiz';
+                nextBtn.style.display = 'block';
+                nextBtn.onclick = loadQuiz;
+        }
+     }
+     document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
